@@ -5,133 +5,296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 // NWOT_FWOUND</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --glass-bg: rgba(255, 105, 180, 0.05);
-            --glass-border: rgba(255, 105, 180, 0.2);
+            --glass-bg: rgba(20, 10, 18, 0.62);
+            --glass-border: rgba(255, 105, 180, 0.28);
             --zoroark-crimson: #bd1c2a;
             --pastel-pink: #ffb6c1;
+            --hot-pink: #ff69b4;
+            --cyan-glitch: #00fff9;
+            --terminal-font: 'Share Tech Mono', monospace;
+            --whimsy-font: 'Comic Neue', cursive;
         }
-        
+
         body { 
-            background-color: #070709; 
+            background-color: #070709;
+            background-image:
+                linear-gradient(rgba(255, 105, 180, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 105, 180, 0.045) 1px, transparent 1px);
+            background-size: 32px 32px;
             overflow: hidden; 
-            font-family: 'Courier New', monospace; 
+            font-family: var(--terminal-font);
+            color: #fce7f3;
+        }
+
+        /* Ambient Glow */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -20%;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(255, 105, 180, 0.18), transparent 35%),
+                radial-gradient(circle at 70% 75%, rgba(189, 28, 42, 0.20), transparent 38%),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 249, 0.06), transparent 45%);
+            filter: blur(40px);
+            animation: breathe 7s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            from { transform: scale(0.96) rotate(0deg); opacity: 0.65; }
+            to { transform: scale(1.05) rotate(2deg); opacity: 1; }
         }
 
         /* Glassmorphism Panel */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 105, 180, 0.05);
+            box-shadow:
+                0 0 55px rgba(189, 28, 42, 0.18),
+                0 0 35px rgba(255, 105, 180, 0.12),
+                inset 0 0 35px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.09), transparent 25%),
+                linear-gradient(315deg, rgba(255, 105, 180, 0.08), transparent 35%);
+            pointer-events: none;
+        }
+
+        .terminal-topbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            border-bottom: 1px solid rgba(255, 105, 180, 0.22);
+            background: rgba(0, 0, 0, 0.32);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            color: rgba(255, 182, 193, 0.72);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            z-index: 3;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--pastel-pink);
+            box-shadow: 0 0 8px rgba(255, 182, 193, 0.65);
+            opacity: 0.75;
         }
 
         /* CRT Scanline Overlay */
         .scanlines {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
             background-size: 100% 4px, 6px 100%; 
             z-index: 50; 
             pointer-events: none;
-        }
-
-        /* Glitch and Cracking Textures (Can be replaced with raw asset imports later) */
-        /* To simulate shifting glowing mist and cracked glass, we will use animated gradients and CSS overlays */
-        
-        /* Shifting Glowing Mist */
-        .glowing-mist {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, 0.1) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 70%, rgba(189, 28, 42, 0.1) 0%, transparent 60%),
-                        radial-gradient(circle at 50% 10%, rgba(0, 255, 255, 0.05) 0%, transparent 40%);
-            animation: shift-mist 15s infinite alternate ease-in-out;
-            z-index: 10;
-            pointer-events: none;
-        }
-        @keyframes shift-mist {
-            0% { transform: scale(1) translate(0,0); }
-            100% { transform: scale(1.1) translate(20px, 10px); }
+            opacity: 0.9;
         }
 
         /* Cracked Glass Effect overlay */
         .cracked-glass {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed;
+            inset: 0;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px);
+                linear-gradient(rgba(255, 255, 255, 0.035) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0.5px, transparent 0.5px);
             background-size: 50px 50px;
             filter: blur(1.5px);
             z-index: 20;
-            opacity: 0.15;
+            opacity: 0.13;
             pointer-events: none;
         }
 
         /* Typography Highlights and Effects */
-        .glow-title { text-shadow: 0 0 15px rgba(255, 105, 180, 0.6); }
-        .glow-zoroark { text-shadow: 0 0 12px rgba(189, 28, 42, 0.8); }
-        .glow-pastel { text-shadow: 0 0 8px var(--pastel-pink); }
-        
+        .glow-title {
+            text-shadow:
+                0 0 16px rgba(255, 105, 180, 0.8),
+                0 0 30px rgba(189, 28, 42, 0.35);
+        }
+
+        .glow-zoroark {
+            text-shadow: 0 0 12px rgba(189, 28, 42, 0.9);
+        }
+
+        .glow-pastel {
+            text-shadow: 0 0 8px var(--pastel-pink);
+        }
+
         /* Headline Glitch Effect */
         .glitch-title {
-            animation: glitch-header 0.8s infinite;
+            position: relative;
+            animation: glitch-header 1.2s infinite;
         }
+
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .glitch-title::before {
+            color: var(--hot-pink);
+            transform: translateX(2px);
+            clip-path: inset(0 0 55% 0);
+        }
+
+        .glitch-title::after {
+            color: var(--cyan-glitch);
+            transform: translateX(-2px);
+            clip-path: inset(55% 0 0 0);
+        }
+
         @keyframes glitch-header {
-            0% { text-shadow: 0.5px 0 0 rgba(255,0,0,0.5), -0.5px 0 0 rgba(0,255,255,0.5); }
-            20% { text-shadow: -1.5px 0 0 rgba(255,0,0,0.5), 1.5px 0 0 rgba(0,255,255,0.5); }
-            40% { text-shadow: 0.5px 0 0 rgba(255,0,0,0.5), -0.5px 0 0 rgba(0,255,255,0.5); }
-            60% { text-shadow: -1.5px 0 0 rgba(255,0,0,0.5), 1.5px 0 0 rgba(0,255,255,0.5); }
-            80% { text-shadow: 0.5px 0 0 rgba(255,0,0,0.5), -0.5px 0 0 rgba(0,255,255,0.5); }
-            100% { text-shadow: 0 0 15px rgba(255, 105, 180, 0.6); }
+            0%, 100% { transform: translate(0); }
+            8% { transform: translate(-1px, 1px); }
+            12% { transform: translate(1px, -1px); }
+            16% { transform: translate(0); }
+            72% { transform: translate(0); }
+            76% { transform: translate(2px, 0); }
+            80% { transform: translate(-2px, 0); }
+            84% { transform: translate(0); }
+        }
+
+        .error-code {
+            font-size: clamp(4rem, 16vw, 9rem);
+            line-height: 0.8;
+            letter-spacing: -0.08em;
+            color: rgba(255, 182, 193, 0.13);
+            position: absolute;
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .zoroark-card {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .zoroark-card::before {
+            content: "";
+            position: absolute;
+            inset: -14px;
+            background: conic-gradient(from 180deg, transparent, rgba(189, 28, 42, 0.65), rgba(255, 105, 180, 0.5), transparent);
+            filter: blur(18px);
+            opacity: 0.45;
+            animation: spin-slow 8s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes spin-slow {
+            to { transform: rotate(360deg); }
+        }
+
+        .return-text {
+            color: rgba(255, 182, 193, 0.8);
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
         }
 
         /* Particle Canvas */
-        #glitter-engine { position: absolute; top: 0; left: 0; z-index: -1; }
-        
-        /* Interactive Spawn Point group styling (whole text + yugo very small) */
+        #glitter-engine {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        /* Interactive Spawn Point group styling */
         .spawn-group {
-            position: fixed; bottom: 4px; right: 4px; z-index: 40; text-right;
-            transform: scale(0.6); /* User requested very, very small for the entire group */
+            position: fixed;
+            bottom: 8px;
+            right: 8px;
+            z-index: 40;
+            text-align: right;
+            transform: scale(0.72);
             transform-origin: bottom right;
         }
     </style>
 </head>
+
 <body class="h-screen w-screen flex items-center justify-center selection:bg-pink-500/30">
 
     <canvas id="glitter-engine"></canvas>
     <div class="scanlines"></div>
-    <div class="glowing-mist"></div>
     <div class="cracked-glass"></div>
 
-    <main class="glass-panel w-[90%] max-w-3xl p-8 rounded-xl relative z-10 flex flex-col items-center justify-center gap-6 shadow-[0_0_40px_rgba(189,28,42,0.15)] text-center">
-        
-        <h1 class="text-2xl md:text-4xl font-extrabold text-pink-200 glow-title glitch-title tracking-widest uppercase mb-1">
+    <main class="glass-panel w-[90%] max-w-3xl px-8 pt-16 pb-9 rounded-2xl relative z-10 flex flex-col items-center justify-center gap-6 text-center">
+
+        <div class="terminal-topbar">
+            <div class="terminal-dots">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+            </div>
+            <span>404 // illusion route corrupted</span>
+        </div>
+
+        <div class="error-code">404</div>
+
+        <h1 class="relative z-10 text-2xl md:text-4xl font-extrabold text-pink-200 glow-title glitch-title tracking-widest uppercase mt-3" data-text="error uwu - nwot fwound">
             error uwu - nwot fwound
         </h1>
 
-        <div class="relative group">
-            <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-            <img src="zoroark.png" alt="Zoroark Entity" class="relative w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-[0_0_15px_rgba(189,28,42,0.5)]">
+        <div class="zoroark-card relative group z-10">
+            <img src="images/zoroark.png" alt="Zoroark Entity" class="relative w-52 h-52 md:w-72 md:h-72 object-contain drop-shadow-[0_0_18px_rgba(189,28,42,0.65)] transition duration-500 group-hover:scale-105 group-hover:rotate-1">
         </div>
 
-        <p class="text-[var(--zoroark-crimson)] font-bold text-base md:text-lg glow-zoroark tracking-wide mt-[-10px]">
+        <p class="relative z-10 text-[var(--zoroark-crimson)] font-bold text-base md:text-lg glow-zoroark tracking-wide mt-[-8px]">
             Zoroark was too lazy to get to working <i class="text-[var(--pastel-pink)] italic glow-pastel font-serif">uwu</i>
+        </p>
+
+        <p class="relative z-10 text-pink-100/45 text-xs md:text-sm tracking-[0.25em] uppercase">
+            route not found // please return to spawn
         </p>
 
     </main>
 
     <div class="spawn-group flex items-end">
-        
+
         <div class="relative group">
-            
+
             <a href="index.html" class="block cursor-pointer relative outline-none z-0 transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_15px_rgba(255,182,193,0.9)] hover:-translate-y-1">
-                <img src="yugocrazy2.png" alt="Return to Spawn" class="w-12 h-12 object-contain opacity-70 transition-opacity duration-300 hover:opacity-100">
+                <img src="images/yugocrazy2.png" alt="Return to Spawn" class="w-12 h-12 object-contain opacity-75 transition-opacity duration-300 hover:opacity-100">
             </a>
 
-            <div class="absolute top-0 right-0 pointer-events-none flex flex-col items-end z-10" style="margin-top: -30px;">
-                <span class="text-[var(--pastel-pink)] text-[10px] md:text-xs font-mono glow-pastel rotate-[-5deg] mr-2">spawn point</span>
+            <div class="absolute top-0 right-0 pointer-events-none flex flex-col items-end z-10" style="margin-top: -34px;">
+                <span class="return-text text-[10px] md:text-xs font-mono rotate-[-5deg] mr-2">spawn point</span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--pastel-pink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="glow-pastel opacity-80" style="transform: rotate(35deg);">
                     <path d="M4 4 Q 12 0 20 8 M 16 4 L 20 8 L 16 12" />
                 </svg>
@@ -144,55 +307,77 @@
     <script>
         const canvas = document.getElementById('glitter-engine');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
 
         const particlesArray = [];
-        const colors = ['rgba(255, 105, 180, 0.8)', 'rgba(255, 182, 193, 0.8)', 'rgba(255, 77, 77, 0.8)', 'rgba(255, 255, 255, 0.5)'];
+        const colors = [
+            'rgba(255, 105, 180, 0.8)',
+            'rgba(255, 182, 193, 0.8)',
+            'rgba(255, 77, 77, 0.8)',
+            'rgba(255, 255, 255, 0.5)'
+        ];
 
         class Particle {
             constructor() {
+                this.reset(true);
+            }
+
+            reset(randomY = false) {
                 this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
+                this.y = randomY ? Math.random() * canvas.height : -10;
                 this.size = Math.random() * 2 + 0.5;
                 this.speedY = Math.random() * 1.5 + 0.5;
                 this.speedX = (Math.random() - 0.5) * 0.5;
                 this.color = colors[Math.floor(Math.random() * colors.length)];
                 this.opacity = Math.random() * 0.5 + 0.2;
             }
+
             update() {
                 this.y += this.speedY;
                 this.x += this.speedX;
-                if (this.y > canvas.height) {
-                    this.y = 0 - this.size;
-                    this.x = Math.random() * canvas.width;
+
+                if (this.y > canvas.height + 10 || this.x < -10 || this.x > canvas.width + 10) {
+                    this.reset(false);
                 }
             }
+
             draw() {
                 ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.globalAlpha = 1;
             }
         }
 
         function initParticles() {
-            for (let i = 0; i < 150; i++) particlesArray.push(new Particle());
+            particlesArray.length = 0;
+            for (let i = 0; i < 150; i++) {
+                particlesArray.push(new Particle());
+            }
         }
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
                 particlesArray[i].draw();
             }
+
             requestAnimationFrame(animateParticles);
         }
 
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            resizeCanvas();
+            initParticles();
         });
 
         initParticles();
